@@ -46,7 +46,7 @@ CMyString::CMyString(CMyString && other)
 
 CMyString::~CMyString()
 {
-	Clear();
+	Delete();
 }
 
 void CMyString::Delete()
@@ -85,68 +85,93 @@ const CMyString CMyString::SubString(size_t start, size_t length) const
 void CMyString::Clear()
 {
 	Delete();
-	m_first = nullptr;
+	m_first = new char[1];
+	m_first[0] = '\0';
 	m_length = 0;
 }
 
 CMyString & CMyString::operator +=(const CMyString & str)
 {
-	char * tempStr = new char[m_length + str.m_length + 1];
-	tempStr[strlen(tempStr)] = '\0';
-	memcpy(tempStr, GetStringData(), m_length);
-	memcpy(tempStr + m_length, str.m_first, str.m_length);
-	Delete();
-	m_length += str.m_length;
-	m_first = tempStr;
-
+	if (str.m_length > 0)
+	{
+		auto tempStr = new char[m_length + str.GetLength() + 1];
+		tempStr[m_length + str.GetLength()] = '\0';
+		memcpy(tempStr, m_first, m_length);
+		memcpy(tempStr + m_length, str.m_first, str.m_length);
+		Delete();
+		m_length += str.m_length;
+		m_first = tempStr;
+	}
 	return *this;
 }
 
-const CMyString operator +(const CMyString & str1, const CMyString & str2)
+const CMyString operator +(const CMyString & lhs, const CMyString & rhs)
 {
-	return (CMyString(str1) += str2);
+	return (CMyString(lhs) += rhs);
 }
 
-const CMyString operator +(const std::string & str1, const CMyString & str2)
+const CMyString operator +(const std::string & lhs, const CMyString & rhs)
 {
-	return (CMyString(str1) += str2);
+	return (CMyString(lhs) += rhs);
 }
 
-const CMyString operator +(const char* str1, const CMyString & str2)
+const CMyString operator +(const char* lhs, const CMyString & rhs)
 {
-	return (CMyString(str1) += str2);
+	return (CMyString(lhs) += rhs);
 }
 
-bool const operator !=(const CMyString & str1, const CMyString & str2)
+bool const operator !=(const CMyString & lhs, const CMyString & rhs)
 {
-	return !(str1 == str2);
+	return !(lhs == rhs);
 }
 
-const bool operator <(const CMyString & str1, const CMyString & str2)
+const bool operator <(const CMyString & lhs, const CMyString & rhs)
 {
-	return memcmp(str1.GetStringData(), str2.GetStringData(), std::min(str1.GetLength(), str2.GetLength())) < 0;
-}
-
-const bool operator >(const CMyString & str1, const CMyString & str2)
-{
-	return memcmp(str1.GetStringData(), str2.GetStringData(), std::min(str1.GetLength(), str2.GetLength())) > 0 ;
-}
-
-const bool operator <=(const CMyString & str1, const CMyString & str2)
-{
-	return !(str1 > str2);
-}
-
-const bool operator >=(const CMyString & str1, const CMyString & str2)
-{
-	return !(str1 < str2);
-}
-
-bool const operator ==(const CMyString & str1, const CMyString & str2)
-{
-	if (str1.GetLength() == str2.GetLength())
+	if (lhs.GetLength() < rhs.GetLength())
 	{
-		return std::memcmp(str1.GetStringData(), str2.GetStringData(), str1.GetLength()) == 0;
+		return true;
+	}
+	else if (lhs.GetLength() > rhs.GetLength())
+	{
+		return false;
+	}
+	else
+	{
+		return memcmp(lhs.GetStringData(), rhs.GetStringData(), lhs.GetLength()) < 0;
+	}
+}
+
+const bool operator >(const CMyString & lhs, const CMyString & rhs)
+{
+	if (lhs.GetLength() > rhs.GetLength())
+	{
+		return true;
+	}
+	else if (lhs.GetLength() < rhs.GetLength())
+	{
+		return false;
+	}
+	else
+	{
+		return memcmp(lhs.GetStringData(), rhs.GetStringData(), lhs.GetLength()) > 0;
+	}
+}
+
+const bool operator <=(const CMyString & lhs, const CMyString & rhs)
+{
+	return !(lhs > rhs);
+}
+
+const bool operator >=(const CMyString & lhs, const CMyString & rhs)
+{
+	return !(lhs < rhs);
+}
+
+bool const operator ==(const CMyString & lhs, const CMyString & rhs)
+{
+	if (lhs.GetLength() == rhs.GetLength())
+	{
+		return std::memcmp(lhs.GetStringData(), rhs.GetStringData(), lhs.GetLength()) == 0;
 	}
 	
 	return false;

@@ -36,13 +36,13 @@ const CMyString operator +(const CMyString &lhs, const CMyString &rhs);
 const CMyString operator +(const std::string &lhs, const CMyString &rhs);
 const CMyString operator +(const char* lhs, const CMyString &rhs);
 
-const bool operator ==(const CMyString &str1, const CMyString &str2);
-const bool operator !=(const CMyString & str1, const CMyString & str2);
+const bool operator ==(const CMyString &lhs, const CMyString &rhs);
+const bool operator !=(const CMyString & lhs, const CMyString & rhs);
 
-const bool operator <(const CMyString &str1, const CMyString &str2);
-const bool operator >(const CMyString &str1, const CMyString &str2);
-const bool operator <=(const CMyString &str1, const CMyString &str2);
-const bool operator >=(const CMyString &str1, const CMyString &str2);
+const bool operator <(const CMyString &lhs, const CMyString &rhs);
+const bool operator >(const CMyString &lhs, const CMyString &rhs);
+const bool operator <=(const CMyString &lhs, const CMyString &rhs);
+const bool operator >=(const CMyString &lhs, const CMyString &rhs);
 
 std::istream & operator >> (std::istream & strm, CMyString & str);
 std::ostream & operator<< (std::ostream & strm, CMyString const& str);
