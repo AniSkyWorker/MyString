@@ -9,10 +9,11 @@
 
 #include <stdio.h>
 #include <tchar.h>
-#include <algorithm>
-#include <string>
 #include <iostream>
 
-
+#define BOOST_TEST_MODULE MyTestModule
+#define BOOST_TEST_INCLUDED
+#pragma warning (disable: 4702)
+#include <boost/test/unit_test.hpp>
 
 // TODO: reference additional headers your program requires here

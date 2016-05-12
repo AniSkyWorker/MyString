@@ -24,8 +24,7 @@ public:
 	CMyString & operator +=(const CMyString & other);
 
 private:
-	void Delete();
-	void Create(size_t length);
+	void Create();
 
 	char * m_first;
 	size_t m_length;
